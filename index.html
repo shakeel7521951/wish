@@ -32,6 +32,16 @@
         transition: all 1s;
         cursor: pointer;
     }
+    .countdown {
+        font-size: 50px;
+        font-family: "Anton", sans-serif;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: red;
+        display: none;
+    }
 
     .hbd:hover {
         filter: grayscale(0);
@@ -293,7 +303,8 @@
             height: auto;
         }
 
-        .hbd1, .hbd2 {
+        .hbd1,
+        .hbd2 {
             flex-direction: column;
         }
 
@@ -323,7 +334,8 @@
             height: 60%;
         }
 
-        .bd1, .bd3 {
+        .bd1,
+        .bd3 {
             width: 100%;
         }
 
@@ -339,6 +351,9 @@
 </style>
 
 <body>
+    <!-- Countdown Display -->
+    <div class="countdown" id="countdown"></div>
+
     <div class="hbd">
         <div class="hbd1">
             <div class="iframe" id="iframe">
@@ -404,20 +419,37 @@
     </div>
 
     <script>
-        let btn = document.querySelector('.btn')
+        let btn = document.querySelector('.btn');
+        let countdown = document.getElementById('countdown');
+        let hbd = document.querySelector('.hbd');
         let a = true;
+
         btn.addEventListener('click', () => {
-            let hbd = document.querySelector('.hbd')
             if (a === true) {
-                btn.style.display = 'none'
-                hbd.style.display = 'block'
+                // Hide the button and show countdown
+                btn.style.display = 'none';
+                countdown.style.display = 'block';
+                let count = 3;
+                countdown.textContent = count;
+
+                // Countdown from 3 to 1
+                let timer = setInterval(() => {
+                    count--;
+                    countdown.textContent = count;
+                    if (count <= 0) {
+                        clearInterval(timer);
+                        countdown.style.display = 'none';
+                        hbd.style.display = 'block';
+                    }
+                }, 1000);
+
                 a = false;
             } else {
-                btn.style.display = 'block'
-                hbd.style.display = 'none'
+                btn.style.display = 'block';
+                hbd.style.display = 'none';
                 a = true;
             }
-        })
+        });
 
         // Quote Slider JavaScript
         const slides = document.querySelectorAll('.quote-slide');
@@ -429,10 +461,11 @@
             slides[currentIndex].classList.add('active');
         }
 
-        setInterval(showNextSlide, 3000); // Change quote every 3 seconds
+        setInterval(showNextSlide, 5000);
 
         AOS.init();
     </script>
 </body>
+
 
 </html>
